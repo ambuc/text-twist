@@ -36,9 +36,7 @@ showState words state revealed = printMatrix state (matrix state)
                   pad = 1
         matrix = chunksOf sq . map (uncurry render) . L.sortBy keyLen . M.toList
           where sq = ceiling $ sqrt $ fromIntegral $ length words
-                render k v
-                  | v         = k
-                  | otherwise = map obscure k
+                render k v = if v then k else map obscure k
                   where obscure l = if l `notElem` revealed then '~' else l
                 keyLen (k1, _) (k2, _) = compare (length k1) (length k2)
 
@@ -48,6 +46,7 @@ playGame words state revealed = do
   when gameOver $ die " └ You win!"
   tInst "Please enter a guess:"
   guess <- getLine
+  when (guess == "") $ playGame words state revealed
   when (head guess == '?') $ do
     tInst $ "Showing '" ++ [guess !! 1] ++ "'."
     playGame words state $ (guess !! 1) : shorten revealed
@@ -60,20 +59,17 @@ playGame words state revealed = do
           | length guess <= 2         = tInst "Too short."
           | guess `notElem` safeWords = tInst "Not a word."
           | otherwise                 = tInst "Not a subword."
-        shorten revealed
-          | length revealed <= 1 = revealed
-          | otherwise            = L.nub $ init revealed
+        shorten revealed = if (length revealed <= 1)
+                             then revealed
+                             else L.nub $ init revealed
 
 tInst :: String -> IO ()
 tInst text = putStrLn $ " ├ " ++ text
 
-randomWord set gen = S.elemAt (fst $ randomR ( 1, length set ) gen) set
-
 main = do
   putStrLn $ " ┌ " ++ "T E X T   T W I S T"
-  --tInst "Please enter a seed word:"
   gen <- getStdGen
-  let seed = randomWord (sieve 8 safeWords)  gen
+  let seed = randomWord gen (between 5 8 safeWords)
   when (seed `notElem` safeWords) $ die " └ Use a real word as a seed."
   let subWords = getSubWords seed
   when (length subWords <= 2) $ die " └ Not enough subwords."
@@ -81,6 +77,6 @@ main = do
   tInst "type ? and then a letter."
   playGame subWords (blankState seed subWords) ""
     where blankState seed = M.fromList . map (\word -> (word, word==seed))
-          sieve len set = S.filter (\x -> len > length x) set
-
-
+          between min max = S.filter (\x -> min < length x && length x < max)
+          randomWord gen set = S.elemAt (randomNum (length set) gen) set
+          randomNum max = fst . randomR (1, max)
