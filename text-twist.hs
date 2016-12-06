@@ -4,6 +4,7 @@ import Data.List.Split
 import Data.Ord
 import Language.Words
 import System.Exit
+import System.Random
 import Text.PrettyPrint.Boxes
 import qualified Data.List as L
 import qualified Data.Map as M
@@ -55,16 +56,19 @@ playGame words state = do
         updateState bool = M.update (\_ -> Just bool)
         displayIncorrectGuess guess
           | length guess <= 2         = tInst "Too short."
-          | guess `notElem` safeWords = tInst "Not a word."
-          | otherwise                 = tInst "Not a subword."
+          | guess `notElem` words     = tInst "Not a subword."
+          | otherwise                 = tInst "Not a word."
 
 tInst :: [Char] -> IO ()
 tInst text = putStrLn $ " ├ " ++ text
 
+randomWord set gen = S.elemAt (fst $ randomR ( 1, length set ) gen) set
+
 main = do
   putStrLn $ " ┌ " ++ "T E X T   T W I S T"
-  tInst "Please enter a seed word:"
-  seed <- getLine
+  --tInst "Please enter a seed word:"
+  gen <- getStdGen
+  let seed = randomWord safeWords gen
   when (seed `notElem` safeWords) $ die " └ Use a real word as a seed."
   let subWords = getSubWords seed
   when (length subWords <= 2) $ die " └ Not enough subwords."
