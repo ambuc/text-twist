@@ -3,30 +3,31 @@
 ```php
 $ runhaskell text-twist.hs
  ┌ T E X T   T W I S T
- ├ Please enter a seed word:
-domino
-┏━━━━━━━━━━━━━━━━━━━━━┓
-┃ ~~~ ~~~ ~~~~ ~~~~   ┃
-┃ ~~~ ~~~ ~~~~ domino ┃
-┃ ~~~ ~~~ ~~~~        ┃
-┃ ~~~ ~~~ ~~~~        ┃
-┗┯━━━━━━━━━━━━━━━━━━━━┛
+ ├ Using 'lowdown'. For a hint,
+ ├ type ? and then a letter.
+┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ~~~ ~~~ ~~~  ~~~~    ┃
+┃ ~~~ ~~~ ~~~  ~~~~    ┃
+┃ ~~~ ~~~ ~~~~ lowdown ┃
+┃ ~~~ ~~~ ~~~~         ┃
+┗┯━━━━━━━━━━━━━━━━━━━━━┛
  ├ Please enter a guess:
-mind
-┏━━━━━━━━━━━━━━━━━━━━━┓
-┃ ~~~ ~~~ ~~~~ ~~~~   ┃
-┃ ~~~ ~~~ mind domino ┃
-┃ ~~~ ~~~ ~~~~        ┃
-┃ ~~~ ~~~ ~~~~        ┃
-┗┯━━━━━━━━━━━━━━━━━━━━┛
+down
+┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ~~~ ~~~ ~~~  ~~~~    ┃
+┃ ~~~ ~~~ ~~~  ~~~~    ┃
+┃ ~~~ ~~~ down lowdown ┃
+┃ ~~~ ~~~ ~~~~         ┃
+┗┯━━━━━━━━━━━━━━━━━━━━━┛
  ├ Please enter a guess:
-mood
-┏━━━━━━━━━━━━━━━━━━━━━┓
-┃ ~~~ ~~~ ~~~~ ~~~~   ┃
-┃ ~~~ ~~~ mind domino ┃
-┃ ~~~ ~~~ ~~~~        ┃
-┃ ~~~ ~~~ mood        ┃
-┗━━━━━━━━━━━━━━━━━━━━━┛
+?w
+ ├ Showing 'w'.
+┏━━━━━━━━━━━━━━━━━━━━━━┓
+┃ ~~~ ~~~ w~~  w~~~    ┃
+┃ ~~w ~w~ w~w  w~~~    ┃
+┃ ~~~ ~w~ down lowdown ┃
+┃ ~~w w~~ ~~~~         ┃
+┗┯━━━━━━━━━━━━━━━━━━━━━┛
 ```
 
 Text Twist is a [classic old internet flash
@@ -53,3 +54,8 @@ $ ./text-twist
  │ Please enter a seed word:
  ...
 ```
+
+## Hints
+You can type `?a` or `?b` or some such to ask Text Twist to show you each
+occurence of that letter on the board. Sadly, that hint expires after a few
+turns.
